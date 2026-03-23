@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Student Invoice Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --brand-color: #1a5276;
+    --text-color: #1a1a2e;
+    --table-stripe: #f0f4f8;
+    --bg-color: #ffffff;
+    --header-font-size: 22px;
+    --body-font-size: 14px;
+    --table-font-size: 13px;
+    --line-height: 1.7;
+    --padding-top: 12mm;
+    --padding-bottom: 10mm;
+    --margin-x: 14mm;
+    --logo-size: 70px;
+    --stamp-size: 120px;
+    --stamp-x: 0px;
+    --stamp-y: 0px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0f0f14;
+    color: #e0e0e6;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  /* ── App Shell ── */
+  .app-shell {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Control Panel ── */
+  .control-panel {
+    width: 380px;
+    min-width: 380px;
+    background: #16161e;
+    border-right: 1px solid #2a2a36;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 20px 22px 16px;
+    border-bottom: 1px solid #2a2a36;
+    flex-shrink: 0;
+  }
+
+  .panel-header h1 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: #f4f4f7;
+  }
+
+  .panel-header p {
+    font-size: 12px;
+    color: #6b6b80;
+    margin-top: 3px;
+  }
+
+  .panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px 100px;
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a36 transparent;
+  }
+
+  .panel-body::-webkit-scrollbar { width: 5px; }
+  .panel-body::-webkit-scrollbar-track { background: transparent; }
+  .panel-body::-webkit-scrollbar-thumb { background: #2a2a36; border-radius: 4px; }
+
+  /* ── Section Groups ── */
+  .section-group {
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #5a5a70;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #22222e;
+  }
+
+  .ctrl-row {
+    margin-bottom: 12px;
+  }
+
+  .ctrl-row label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12.5px;
+    color: #a0a0b4;
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+
+  .ctrl-row label span.val {
+    font-family: 'DM Sans', monospace;
+    font-size: 11px;
+    color: #6b6b80;
+    background: #1e1e28;
+    padding: 1px 7px;
+    border-radius: 4px;
+  }
+
+  /* ── Input Styles ── */
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: #2a2a36;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #6366f1;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: box-shadow .15s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 4px rgba(99,102,241,.25);
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    background: #1e1e28;
+    border: 1px solid #2a2a36;
+    border-radius: 6px;
+    padding: 7px 10px;
+    color: #d0d0de;
+    font-size: 12.5px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color .15s;
+  }
+
+  input[type="text"]:focus,
+  input[type="number"]:focus {
+    border-color: #6366f1;
+  }
+
+  input[type="color"] {
+    -webkit-appearance: none;
+    width: 36px;
+    height: 28px;
+    border: 2px solid #2a2a36;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
+  input[type="color"]::-webkit-color-swatch { border-radius: 3px; border: none; }
+
+  .color-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .color-row label {
+    flex: 1;
+    font-size: 12.5px;
+    color: #a0a0b4;
+    margin-bottom: 0;
+    font-weight: 500;
+  }
+
+  /* ── File Upload ── */
+  .file-upload-zone {
+    border: 1.5px dashed #2a2a36;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .file-upload-zone:hover {
+    border-color: #6366f1;
+    background: rgba(99,102,241,.04);
+  }
+
+  .file-upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .file-upload-zone .upload-label {
+    font-size: 11.5px;
+    color: #6b6b80;
+  }
+
+  .file-upload-zone .upload-label svg {
+    display: block;
+    margin: 0 auto 4px;
+  }
+
+  .file-upload-zone img.preview-thumb {
+    max-height: 44px;
+    margin: 0 auto;
+    display: block;
+    border-radius: 4px;
+  }
+
+  /* ── Table Row Buttons ── */
+  .btn-row-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .btn-sm {
+    flex: 1;
+    padding: 7px 0;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .15s;
+  }
+
+  .btn-add {
+    background: rgba(99,102,241,.12);
+    color: #818cf8;
+  }
+  .btn-add:hover { background: rgba(99,102,241,.22); }
+
+  .btn-remove {
+    background: rgba(239,68,68,.1);
+    color: #f87171;
+  }
+  .btn-remove:hover { background: rgba(239,68,68,.2); }
+
+  /* ── Preview Area ── */
+  .preview-area {
+    flex: 1;
+    background: #0f0f14;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    padding: 30px 20px;
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a36 transparent;
+  }
+
+  .preview-area::-webkit-scrollbar { width: 6px; }
+  .preview-area::-webkit-scrollbar-track { background: transparent; }
+  .preview-area::-webkit-scrollbar-thumb { background: #2a2a36; border-radius: 4px; }
+
+  /* ── A4 Paper ── */
+  .a4-paper {
+    width: 210mm;
+    min-height: 297mm;
+    background: var(--bg-color);
+    box-shadow: 0 8px 60px rgba(0,0,0,.45), 0 1px 3px rgba(0,0,0,.3);
+    border-radius: 2px;
+    flex-shrink: 0;
+    position: relative;
+    direction: rtl;
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    color: var(--text-color);
+    padding: var(--padding-top) var(--margin-x) var(--padding-bottom);
+    line-height: var(--line-height);
+    overflow: hidden;
+  }
+
+  /* ── Invoice Header ── */
+  .inv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--brand-color);
+    margin-bottom: 6mm;
+    gap: 12px;
+  }
+
+  .inv-header-center {
+    flex: 1;
+    text-align: center;
+  }
+
+  .inv-header-center .uni-name {
+    font-size: var(--header-font-size);
+    font-weight: 800;
+    color: var(--brand-color);
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .inv-header-center .uni-sub {
+    font-size: calc(var(--body-font-size) - 1px);
+    color: #555;
+    font-weight: 400;
+  }
+
+  .inv-logo-area img {
+    width: var(--logo-size);
+    height: var(--logo-size);
+    object-fit: contain;
+  }
+
+  .inv-logo-area .logo-placeholder {
+    width: var(--logo-size);
+    height: var(--logo-size);
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 10px;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+  }
+
+  /* ── Invoice Meta Row ── */
+  .inv-meta-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5mm;
+    font-size: var(--body-font-size);
+  }
+
+  .inv-meta-item {
+    display: flex;
+    gap: 4px;
+  }
+
+  .inv-meta-item .meta-label {
+    font-weight: 700;
+    color: var(--brand-color);
+  }
+
+  /* ── Student Info Card ── */
+  .student-info-card {
+    background: #f7f9fb;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 4mm 5mm;
+    margin-bottom: 6mm;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3mm 8mm;
+    font-size: var(--body-font-size);
+  }
+
+  .si-field {
+    display: flex;
+    gap: 4px;
+  }
+
+  .si-field .si-label {
+    font-weight: 700;
+    color: var(--brand-color);
+    white-space: nowrap;
+  }
+
+  .si-field .si-value {
+    border-bottom: 1px dotted #999;
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 1px;
+  }
+
+  /* ── Financial Table ── */
+  .fin-table-wrap {
+    margin-bottom: 5mm;
+  }
+
+  .fin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--table-font-size);
+  }
+
+  .fin-table thead th {
+    background: var(--brand-color);
+    color: #fff;
+    padding: 3mm 3mm;
+    font-weight: 700;
+    text-align: center;
+    font-size: calc(var(--table-font-size) + 0.5px);
+  }
+
+  .fin-table thead th:first-child { border-radius: 0 5px 0 0; }
+  .fin-table thead th:last-child { border-radius: 5px 0 0 0; }
+
+  .fin-table tbody td {
+    padding: 2.5mm 3mm;
+    text-align: center;
+    border-bottom: 1px solid #e8ecf0;
+    page-break-inside: avoid;
+  }
+
+  .fin-table tbody tr:nth-child(even) td {
+    background: var(--table-stripe);
+  }
+
+  .fin-table tbody tr {
+    page-break-inside: avoid;
+  }
+
+  .fin-table tfoot td {
+    padding: 3mm;
+    font-weight: 800;
+    font-size: calc(var(--table-font-size) + 2px);
+    border-top: 2.5px solid var(--brand-color);
+  }
+
+  .total-cell {
+    color: var(--brand-color);
+  }
+
+  /* ── Signature / Stamp Footer ── */
+  .inv-footer-section {
+    margin-top: 8mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10mm;
+    font-size: var(--body-font-size);
+  }
+
+  .sig-block {
+    text-align: center;
+    flex: 1;
+  }
+
+  .sig-block .sig-title {
+    font-weight: 700;
+    color: var(--brand-color);
+    margin-bottom: 14mm;
+    font-size: calc(var(--body-font-size) + 0.5px);
+  }
+
+  .sig-block .sig-line {
+    border-top: 1.5px solid #999;
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 2mm;
+    font-size: 10px;
+    color: #888;
+  }
+
+  .stamp-block {
+    position: relative;
+    width: var(--stamp-size);
+    height: var(--stamp-size);
+    flex-shrink: 0;
+  }
+
+  .stamp-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transform: translate(var(--stamp-x), var(--stamp-y));
+    opacity: .85;
+  }
+
+  .stamp-block .stamp-placeholder {
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bbb;
+    font-size: 10px;
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+    transform: translate(var(--stamp-x), var(--stamp-y));
+  }
+
+  /* ── Notes ── */
+  .inv-notes {
+    margin-top: 6mm;
+    padding-top: 4mm;
+    border-top: 1px dashed #ccc;
+    font-size: calc(var(--body-font-size) - 1.5px);
+    color: #777;
+    text-align: center;
+  }
+
+  /* ── Floating Print Button ── */
+  .fab-print {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 6px 30px rgba(99,102,241,.4);
+    transition: all .2s;
+  }
+
+  .fab-print:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(99,102,241,.5);
+  }
+
+  .fab-print svg { flex-shrink: 0; }
+
+  /* ─────────────── PRINT STYLES ─────────────── */
+  @media print {
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      margin: 0;
+      padding: 0;
+      background: #fff !important;
+      overflow: visible;
+    }
+
+    body {
+      font-family: 'Cairo', 'Tajawal', sans-serif;
+    }
+
+    .control-panel,
+    .fab-print {
+      display: none !important;
+    }
+
+    .preview-area {
+      padding: 0 !important;
+      margin: 0 !important;
+      overflow: visible !important;
+      background: #fff !important;
+      display: block !important;
+    }
+
+    .a4-paper {
+      width: 210mm !important;
+      min-height: 297mm !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      margin: 0 !important;
+      page-break-after: auto;
+    }
+
+    .fin-table tbody tr {
+      page-break-inside: avoid !important;
+    }
+
+    .inv-footer-section {
+      page-break-inside: avoid !important;
+    }
+
+    .student-info-card {
+      background: #f7f9fb !important;
+      -webkit-print-color-adjust: exact !important;
+    }
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-group {
+    animation: fadeSlideIn .35s ease both;
+  }
+
+  .section-group:nth-child(2) { animation-delay: .05s; }
+  .section-group:nth-child(3) { animation-delay: .1s; }
+  .section-group:nth-child(4) { animation-delay: .15s; }
+  .section-group:nth-child(5) { animation-delay: .2s; }
+  .section-group:nth-child(6) { animation-delay: .25s; }
+  .section-group:nth-child(7) { animation-delay: .3s; }
+
+  /* ── Textarea ── */
+  textarea.ctrl-textarea {
+    width: 100%;
+    background: #1e1e28;
+    border: 1px solid #2a2a36;
+    border-radius: 6px;
+    padding: 7px 10px;
+    color: #d0d0de;
+    font-size: 12.5px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    resize: vertical;
+    min-height: 44px;
+    transition: border-color .15s;
+  }
+  textarea.ctrl-textarea:focus { border-color: #6366f1; }
+
+  /* ── Inline 2-col ctrl ── */
+  .ctrl-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- ════════════ CONTROL PANEL ════════════ -->
+  <aside class="control-panel" id="controlPanel">
+    <div class="panel-header">
+      <h1>📄 Invoice Generator</h1>
+      <p>Student Invoice · Arabic RTL Output</p>
+    </div>
+    <div class="panel-body">
+
+      <!-- CONTENT: University & Invoice -->
+      <div class="section-group">
+        <div class="section-title">University & Invoice Info</div>
+        <div class="ctrl-row">
+          <label>University Name (Arabic)</label>
+          <input type="text" id="ctrlUniName" value="جامعة طرابلس" dir="rtl" oninput="render()">
+        </div>
+        <div class="ctrl-row">
+          <label>Subtitle / Department</label>
+          <input type="text" id="ctrlUniSub" value="إدارة الشؤون المالية" dir="rtl" oninput="render()">
+        </div>
+        <div class="ctrl-2col">
+          <div class="ctrl-row">
+            <label>Invoice # (رقم الفاتورة)</label>
+            <input type="text" id="ctrlInvNum" value="INV-2026-0451" oninput="render()">
+          </div>
+          <div class="ctrl-row">
+            <label>Date (التاريخ)</label>
+            <input type="text" id="ctrlDate" value="2026/03/23" oninput="render()">
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT: Student Info -->
+      <div class="section-group">
+        <div class="section-title">Student Information</div>
+        <div class="ctrl-row">
+          <label>Student Name (اسم الطالب)</label>
+          <input type="text" id="ctrlStudName" value="أحمد محمد العريبي" dir="rtl" oninput="render()">
+        </div>
+        <div class="ctrl-2col">
+          <div class="ctrl-row">
+            <label>Student ID (الرقم الجامعي)</label>
+            <input type="text" id="ctrlStudId" value="20260134" oninput="render()">
+          </div>
+          <div class="ctrl-row">
+            <label>Academic Year</label>
+            <input type="text" id="ctrlAcYear" value="2025 - 2026" oninput="render()">
+          </div>
+        </div>
+        <div class="ctrl-2col">
+          <div class="ctrl-row">
+            <label>Faculty (الكلية)</label>
+            <input type="text" id="ctrlFaculty" value="كلية الهندسة" dir="rtl" oninput="render()">
+          </div>
+          <div class="ctrl-row">
+            <label>Major (التخصص)</label>
+            <input type="text" id="ctrlMajor" value="هندسة البرمجيات" dir="rtl" oninput="render()">
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE ROWS -->
+      <div class="section-group">
+        <div class="section-title">Invoice Items (بنود الفاتورة)</div>
+        <div id="tableRowsCtrl"></div>
+        <div class="btn-row-actions">
+          <button class="btn-sm btn-add" onclick="addRow()">+ Add Row</button>
+          <button class="btn-sm btn-remove" onclick="removeRow()">− Remove Row</button>
+        </div>
+      </div>
+
+      <!-- TYPOGRAPHY -->
+      <div class="section-group">
+        <div class="section-title">Typography</div>
+        <div class="ctrl-row">
+          <label>Header Font Size <span class="val" id="valHeaderFs">22px</span></label>
+          <input type="range" min="14" max="36" value="22" id="ctrlHeaderFs" oninput="updateSlider(this,'valHeaderFs','--header-font-size','px')">
+        </div>
+        <div class="ctrl-row">
+          <label>Body Font Size <span class="val" id="valBodyFs">14px</span></label>
+          <input type="range" min="10" max="20" value="14" id="ctrlBodyFs" oninput="updateSlider(this,'valBodyFs','--body-font-size','px')">
+        </div>
+        <div class="ctrl-row">
+          <label>Table Font Size <span class="val" id="valTableFs">13px</span></label>
+          <input type="range" min="9" max="18" value="13" id="ctrlTableFs" oninput="updateSlider(this,'valTableFs','--table-font-size','px')">
+        </div>
+        <div class="ctrl-row">
+          <label>Line Height <span class="val" id="valLh">1.7</span></label>
+          <input type="range" min="12" max="28" value="17" id="ctrlLh" oninput="updateSliderDecimal(this,'valLh','--line-height',10)">
+        </div>
+      </div>
+
+      <!-- LAYOUT / SPACING -->
+      <div class="section-group">
+        <div class="section-title">Layout & Spacing</div>
+        <div class="ctrl-row">
+          <label>Padding Top <span class="val" id="valPt">12mm</span></label>
+          <input type="range" min="4" max="30" value="12" id="ctrlPt" oninput="updateSlider(this,'valPt','--padding-top','mm')">
+        </div>
+        <div class="ctrl-row">
+          <label>Padding Bottom <span class="val" id="valPb">10mm</span></label>
+          <input type="range" min="4" max="30" value="10" id="ctrlPb" oninput="updateSlider(this,'valPb','--padding-bottom','mm')">
+        </div>
+        <div class="ctrl-row">
+          <label>Horizontal Margin <span class="val" id="valMx">14mm</span></label>
+          <input type="range" min="6" max="30" value="14" id="ctrlMx" oninput="updateSlider(this,'valMx','--margin-x','mm')">
+        </div>
+        <div class="ctrl-row">
+          <label>Logo Size <span class="val" id="valLogo">70px</span></label>
+          <input type="range" min="30" max="130" value="70" id="ctrlLogoSize" oninput="updateSlider(this,'valLogo','--logo-size','px')">
+        </div>
+        <div class="ctrl-row">
+          <label>Stamp Size <span class="val" id="valStamp">120px</span></label>
+          <input type="range" min="50" max="200" value="120" id="ctrlStampSize" oninput="updateSlider(this,'valStamp','--stamp-size','px')">
+        </div>
+        <div class="ctrl-row">
+          <label>Stamp Offset X <span class="val" id="valStampX">0px</span></label>
+          <input type="range" min="-60" max="60" value="0" id="ctrlStampX" oninput="updateSlider(this,'valStampX','--stamp-x','px')">
+        </div>
+        <div class="ctrl-row">
+          <label>Stamp Offset Y <span class="val" id="valStampY">0px</span></label>
+          <input type="range" min="-60" max="60" value="0" id="ctrlStampY" oninput="updateSlider(this,'valStampY','--stamp-y','px')">
+        </div>
+      </div>
+
+      <!-- COLORS -->
+      <div class="section-group">
+        <div class="section-title">Color Palette</div>
+        <div class="color-row">
+          <label>Brand / Primary</label>
+          <input type="color" id="ctrlBrandColor" value="#1a5276" oninput="updateColor(this,'--brand-color')">
+        </div>
+        <div class="color-row">
+          <label>Text Color</label>
+          <input type="color" id="ctrlTextColor" value="#1a1a2e" oninput="updateColor(this,'--text-color')">
+        </div>
+        <div class="color-row">
+          <label>Table Stripe</label>
+          <input type="color" id="ctrlStripeColor" value="#f0f4f8" oninput="updateColor(this,'--table-stripe')">
+        </div>
+        <div class="color-row">
+          <label>Background</label>
+          <input type="color" id="ctrlBgColor" value="#ffffff" oninput="updateColor(this,'--bg-color')">
+        </div>
+      </div>
+
+      <!-- IMAGE UPLOADS -->
+      <div class="section-group">
+        <div class="section-title">Images</div>
+        <div class="ctrl-row">
+          <label>University Logo</label>
+          <div class="file-upload-zone" id="logoZone">
+            <input type="file" accept="image/*" onchange="handleFileUpload(event,'logo')">
+            <div class="upload-label" id="logoLabel">
+              <svg width="20" height="20" fill="none" stroke="#6b6b80" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4l4 4M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+              Click or drag to upload
+            </div>
+          </div>
+        </div>
+        <div class="ctrl-row">
+          <label>Official Stamp</label>
+          <div class="file-upload-zone" id="stampZone">
+            <input type="file" accept="image/*" onchange="handleFileUpload(event,'stamp')">
+            <div class="upload-label" id="stampLabel">
+              <svg width="20" height="20" fill="none" stroke="#6b6b80" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 16V4m0 0L8 8m4-4l4 4M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+              Click or drag to upload
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER / NOTES -->
+      <div class="section-group">
+        <div class="section-title">Footer & Notes</div>
+        <div class="ctrl-row">
+          <label>Disclaimer / Note</label>
+          <textarea class="ctrl-textarea" id="ctrlNotes" dir="rtl" rows="2" oninput="render()">هذه الفاتورة صادرة من إدارة الشؤون المالية وتعتبر وثيقة رسمية. لا يُعتد بها إلا بعد التصديق عليها بالختم الرسمي.</textarea>
+        </div>
+        <div class="ctrl-2col">
+          <div class="ctrl-row">
+            <label>Signature Title 1</label>
+            <input type="text" id="ctrlSig1" value="المحاسب" dir="rtl" oninput="render()">
+          </div>
+          <div class="ctrl-row">
+            <label>Signature Title 2</label>
+            <input type="text" id="ctrlSig2" value="عميد الكلية" dir="rtl" oninput="render()">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ════════════ PREVIEW AREA ════════════ -->
+  <main class="preview-area">
+    <div class="a4-paper" id="invoicePaper">
+
+      <!-- HEADER -->
+      <div class="inv-header">
+        <div class="inv-logo-area" id="logoRight">
+          <div class="logo-placeholder" id="logoRightPlaceholder">الشعار</div>
+          <img id="logoRightImg" src="" alt="" style="display:none;">
+        </div>
+        <div class="inv-header-center">
+          <div class="uni-name" id="invUniName">جامعة طرابلس</div>
+          <div class="uni-sub" id="invUniSub">إدارة الشؤون المالية</div>
+        </div>
+        <div class="inv-logo-area" id="logoLeft">
+          <div class="logo-placeholder" id="logoLeftPlaceholder">الشعار</div>
+          <img id="logoLeftImg" src="" alt="" style="display:none;">
+        </div>
+      </div>
+
+      <!-- Invoice Title -->
+      <div style="text-align:center; margin-bottom:4mm;">
+        <span style="font-size:calc(var(--header-font-size) - 4px); font-weight:800; color:var(--brand-color); border-bottom:2px solid var(--brand-color); padding-bottom:2px;">فاتورة رسوم دراسية</span>
+      </div>
+
+      <!-- META ROW -->
+      <div class="inv-meta-row">
+        <div class="inv-meta-item">
+          <span class="meta-label">رقم الفاتورة:</span>
+          <span id="invInvNum">INV-2026-0451</span>
+        </div>
+        <div class="inv-meta-item">
+          <span class="meta-label">التاريخ:</span>
+          <span id="invDate">2026/03/23</span>
+        </div>
+        <div class="inv-meta-item">
+          <span class="meta-label">السنة الدراسية:</span>
+          <span id="invAcYear">2025 - 2026</span>
+        </div>
+      </div>
+
+      <!-- STUDENT INFO -->
+      <div class="student-info-card">
+        <div class="si-field">
+          <span class="si-label">اسم الطالب:</span>
+          <span class="si-value" id="invStudName">أحمد محمد العريبي</span>
+        </div>
+        <div class="si-field">
+          <span class="si-label">الرقم الجامعي:</span>
+          <span class="si-value" id="invStudId">20260134</span>
+        </div>
+        <div class="si-field">
+          <span class="si-label">الكلية:</span>
+          <span class="si-value" id="invFaculty">كلية الهندسة</span>
+        </div>
+        <div class="si-field">
+          <span class="si-label">التخصص:</span>
+          <span class="si-value" id="invMajor">هندسة البرمجيات</span>
+        </div>
+      </div>
+
+      <!-- FINANCIAL TABLE -->
+      <div class="fin-table-wrap">
+        <table class="fin-table">
+          <thead>
+            <tr>
+              <th style="width:8%;">#</th>
+              <th style="width:42%;">البيان</th>
+              <th style="width:17%;">سعر الوحدة (د.ل)</th>
+              <th style="width:13%;">الكمية</th>
+              <th style="width:20%;">المجموع (د.ل)</th>
+            </tr>
+          </thead>
+          <tbody id="invTableBody">
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4" style="text-align:left; padding-right:5mm;">الإجمالي الكلي</td>
+              <td class="total-cell" id="invGrandTotal" style="text-align:center;">0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- FOOTER: SIGNATURES & STAMP -->
+      <div class="inv-footer-section">
+        <div class="sig-block">
+          <div class="sig-title" id="invSig1Title">المحاسب</div>
+          <div class="sig-line">التوقيع</div>
+        </div>
+        <div class="stamp-block">
+          <div class="stamp-placeholder" id="stampPlaceholder">الختم الرسمي</div>
+          <img id="stampImg" src="" alt="" style="display:none;">
+        </div>
+        <div class="sig-block">
+          <div class="sig-title" id="invSig2Title">عميد الكلية</div>
+          <div class="sig-line">التوقيع</div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="inv-notes" id="invNotes">
+        هذه الفاتورة صادرة من إدارة الشؤون المالية وتعتبر وثيقة رسمية. لا يُعتد بها إلا بعد التصديق عليها بالختم الرسمي.
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- FLOATING PRINT BUTTON -->
+<button class="fab-print" onclick="window.print()">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+  Print / Save as PDF
+</button>
+
+<script>
+  // ── Data: Invoice Rows ──
+  let rows = [
+    { desc: 'رسوم التسجيل الدراسي', price: 250.00, qty: 1 },
+    { desc: 'رسوم المعامل والمختبرات', price: 150.00, qty: 2 },
+    { desc: 'رسوم الخدمات الطلابية', price: 100.00, qty: 1 },
+    { desc: 'رسوم المكتبة والمراجع', price: 75.00, qty: 1 },
+  ];
+
+  // ── Render Invoice Table ──
+  function renderTable() {
+    const tbody = document.getElementById('invTableBody');
+    let html = '';
+    let grand = 0;
+    rows.forEach((r, i) => {
+      const total = r.price * r.qty;
+      grand += total;
+      html += `<tr>
+        <td>${i + 1}</td>
+        <td style="text-align:right;">${r.desc}</td>
+        <td>${r.price.toFixed(2)}</td>
+        <td>${r.qty}</td>
+        <td>${total.toFixed(2)}</td>
+      </tr>`;
+    });
+    tbody.innerHTML = html;
+    document.getElementById('invGrandTotal').textContent = grand.toFixed(2);
+  }
+
+  // ── Render Control Panel Table Row Editors ──
+  function renderRowEditors() {
+    const container = document.getElementById('tableRowsCtrl');
+    let html = '';
+    rows.forEach((r, i) => {
+      html += `<div style="margin-bottom:10px; padding:8px; background:#1b1b25; border-radius:6px; border:1px solid #25252f;">
+        <div style="font-size:11px; color:#6b6b80; margin-bottom:5px; font-weight:600;">Row ${i + 1}</div>
+        <input type="text" value="${r.desc}" dir="rtl" style="margin-bottom:5px;" onchange="rows[${i}].desc=this.value;renderTable();">
+        <div class="ctrl-2col">
+          <input type="number" value="${r.price}" step="0.01" min="0" placeholder="Unit Price" onchange="rows[${i}].price=parseFloat(this.value)||0;renderTable();">
+          <input type="number" value="${r.qty}" step="1" min="1" placeholder="Qty" onchange="rows[${i}].qty=parseInt(this.value)||1;renderTable();">
+        </div>
+      </div>`;
+    });
+    container.innerHTML = html;
+  }
+
+  function addRow() {
+    rows.push({ desc: 'بند جديد', price: 0, qty: 1 });
+    renderRowEditors();
+    renderTable();
+  }
+
+  function removeRow() {
+    if (rows.length > 1) {
+      rows.pop();
+      renderRowEditors();
+      renderTable();
+    }
+  }
+
+  // ── Render all text fields ──
+  function render() {
+    document.getElementById('invUniName').textContent = document.getElementById('ctrlUniName').value;
+    document.getElementById('invUniSub').textContent = document.getElementById('ctrlUniSub').value;
+    document.getElementById('invInvNum').textContent = document.getElementById('ctrlInvNum').value;
+    document.getElementById('invDate').textContent = document.getElementById('ctrlDate').value;
+    document.getElementById('invAcYear').textContent = document.getElementById('ctrlAcYear').value;
+    document.getElementById('invStudName').textContent = document.getElementById('ctrlStudName').value;
+    document.getElementById('invStudId').textContent = document.getElementById('ctrlStudId').value;
+    document.getElementById('invFaculty').textContent = document.getElementById('ctrlFaculty').value;
+    document.getElementById('invMajor').textContent = document.getElementById('ctrlMajor').value;
+    document.getElementById('invNotes').textContent = document.getElementById('ctrlNotes').value;
+    document.getElementById('invSig1Title').textContent = document.getElementById('ctrlSig1').value;
+    document.getElementById('invSig2Title').textContent = document.getElementById('ctrlSig2').value;
+  }
+
+  // ── CSS Variable Updaters ──
+  const paper = document.getElementById('invoicePaper');
+
+  function updateSlider(el, valId, cssVar, unit) {
+    const v = el.value;
+    document.getElementById(valId).textContent = v + unit;
+    paper.style.setProperty(cssVar, v + unit);
+  }
+
+  function updateSliderDecimal(el, valId, cssVar, divisor) {
+    const v = (el.value / divisor).toFixed(1);
+    document.getElementById(valId).textContent = v;
+    paper.style.setProperty(cssVar, v);
+  }
+
+  function updateColor(el, cssVar) {
+    paper.style.setProperty(cssVar, el.value);
+  }
+
+  // ── File Upload Handler ──
+  function handleFileUpload(event, type) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const dataUrl = e.target.result;
+
+      if (type === 'logo') {
+        // Show in both logo positions
+        document.getElementById('logoRightImg').src = dataUrl;
+        document.getElementById('logoRightImg').style.display = 'block';
+        document.getElementById('logoRightPlaceholder').style.display = 'none';
+        document.getElementById('logoLeftImg').src = dataUrl;
+        document.getElementById('logoLeftImg').style.display = 'block';
+        document.getElementById('logoLeftPlaceholder').style.display = 'none';
+        // Update control panel preview
+        document.getElementById('logoLabel').innerHTML = `<img class="preview-thumb" src="${dataUrl}" alt="Logo">`;
+      } else if (type === 'stamp') {
+        document.getElementById('stampImg').src = dataUrl;
+        document.getElementById('stampImg').style.display = 'block';
+        document.getElementById('stampPlaceholder').style.display = 'none';
+        document.getElementById('stampLabel').innerHTML = `<img class="preview-thumb" src="${dataUrl}" alt="Stamp">`;
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── Initialize ──
+  renderRowEditors();
+  renderTable();
+</script>
+
+</body>
+</html>
