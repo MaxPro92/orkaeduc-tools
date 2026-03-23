@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نموذج بيانات التأشيرة البريطانية</title>
+
+<!-- ============================================================
+     FONTS
+     ============================================================ -->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap');
+
+/* ============================================================
+   CSS VARIABLES & RESET
+   ============================================================ */
+:root {
+  --primary: #1B3A5C;
+  --primary-light: #2C5F8A;
+  --accent: #C8102E;
+  --accent-light: #e8394f;
+  --bg: #F7F8FA;
+  --card: #FFFFFF;
+  --border: #D5D9E0;
+  --border-focus: #2C5F8A;
+  --text: #1A1A2E;
+  --text-muted: #6B7280;
+  --success: #059669;
+  --warning-bg: #FFF7ED;
+  --warning-border: #F59E0B;
+  --warning-text: #92400E;
+  --section-bg: #F0F4F8;
+  --radius: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+  --font-body: 'Tajawal', 'Noto Naskh Arabic', sans-serif;
+  --font-heading: 'Noto Naskh Arabic', 'Tajawal', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+  direction: rtl;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.form-container {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* ============================================================
+   FIXED LOGO
+   ============================================================ */
+.fixed-logo-area {
+  padding: 16px 0;
+}
+.fixed-logo-area img {
+  max-height: 140px;
+  object-fit: contain;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.form-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #fff;
+  text-align: center;
+  padding: 28px 24px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.form-header::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: -10%;
+  width: 120%;
+  height: 180%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.form-header h1 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  position: relative;
+}
+.form-header p {
+  font-size: 14px;
+  opacity: 0.85;
+  position: relative;
+}
+
+/* ============================================================
+   WARNING BOX
+   ============================================================ */
+.warning-box {
+  background: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.warning-box .icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.warning-box p {
+  color: var(--warning-text);
+  font-weight: 500;
+  font-size: 14.5px;
+  line-height: 1.8;
+}
+
+/* ============================================================
+   SECTION CARDS
+   ============================================================ */
+.form-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.section-title {
+  background: var(--section-bg);
+  border-bottom: 2px solid var(--primary);
+  padding: 14px 24px;
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .num {
+  background: var(--primary);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-family: var(--font-body);
+  flex-shrink: 0;
+}
+.section-body {
+  padding: 20px 24px;
+}
+
+/* ============================================================
+   FORM GRID & FIELDS
+   ============================================================ */
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.field-group.full-width {
+  grid-column: 1 / -1;
+}
+.field-group.half-width {
+  /* default single col */
+}
+.field-group label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.field-group label .req {
+  color: var(--accent);
+  font-weight: 700;
+}
+.field-group input[type="text"],
+.field-group input[type="email"],
+.field-group input[type="tel"],
+.field-group input[type="date"],
+.field-group input[type="number"],
+.field-group select,
+.field-group textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text);
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  direction: rtl;
+}
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(44,95,138,0.12);
+}
+.field-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Radio / Checkbox groups */
+.radio-group, .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 6px 0;
+}
+.radio-group label, .checkbox-group label {
+  font-weight: 400;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  transition: all 0.2s;
+  background: #fff;
+}
+.radio-group label:hover, .checkbox-group label:hover {
+  border-color: var(--primary-light);
+  background: var(--section-bg);
+}
+.radio-group input:checked + span,
+.checkbox-group input:checked + span {
+  color: var(--primary);
+  font-weight: 600;
+}
+.radio-group input, .checkbox-group input {
+  accent-color: var(--primary);
+}
+
+/* ============================================================
+   CONDITIONAL SECTIONS
+   ============================================================ */
+.conditional-block {
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+.conditional-block.visible {
+  display: block;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.conditional-inner {
+  background: var(--section-bg);
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 12px;
+  border-right: 3px solid var(--primary-light);
+}
+
+/* ============================================================
+   DYNAMIC ARRAYS (Add/Remove)
+   ============================================================ */
+.dynamic-container {
+  margin-top: 8px;
+}
+.dynamic-entry {
+  background: var(--section-bg);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+  position: relative;
+  border-right: 3px solid var(--primary-light);
+  animation: slideDown 0.3s ease;
+}
+.dynamic-entry .entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.dynamic-entry .entry-num {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--primary);
+}
+.btn-remove {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 4px 14px;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-remove:hover { background: var(--accent-light); }
+
+.btn-add {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.btn-add:hover { background: var(--primary-light); }
+
+/* ============================================================
+   DOCUMENTS TABLE
+   ============================================================ */
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.doc-table th, .doc-table td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: right;
+  font-size: 14px;
+}
+.doc-table th {
+  background: var(--section-bg);
+  font-weight: 600;
+  color: var(--primary);
+}
+.doc-table td input[type="text"] {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 4px;
+}
+.doc-table td input[type="text"]:focus {
+  outline: none;
+  background: #EFF6FF;
+}
+.doc-table td input[type="radio"] {
+  accent-color: var(--primary);
+}
+
+/* ============================================================
+   SIGNATURE & DECLARATION
+   ============================================================ */
+.declaration-text {
+  font-size: 14px;
+  line-height: 2;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.signature-line {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+.signature-line label {
+  font-weight: 600;
+  color: var(--primary);
+}
+.signature-line input {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 2px solid var(--primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  background: transparent;
+}
+.signature-line input:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+/* ============================================================
+   PAGE SIGNATURE (per-page in print)
+   ============================================================ */
+.page-signature {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.page-signature label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.page-signature input {
+  width: 200px;
+  padding: 6px 10px;
+  border: none;
+  border-bottom: 1.5px solid var(--border);
+  font-family: var(--font-body);
+  font-size: 14px;
+  background: transparent;
+}
+.page-signature input:focus {
+  outline: none;
+  border-bottom-color: var(--primary);
+}
+
+/* ============================================================
+   SUBMIT BUTTON
+   ============================================================ */
+.btn-print {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 24px auto;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-print:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(27,58,92,0.25);
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+.separator {
+  border: none;
+  border-top: 1px dashed var(--border);
+  margin: 16px 0;
+}
+.note-text {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Dynamic entry selects */
+.dynamic-entry select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text);
+  background: #fff;
+  direction: rtl;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.dynamic-entry select:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(44,95,138,0.12);
+}
+
+/* ============================================================
+   PRINT STYLES
+   ============================================================ */
+@media print {
+  /* Hide UI controls */
+  .btn-add,
+  .btn-remove,
+  .btn-print,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #000;
+  }
+  .form-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .form-header {
+    background: none !important;
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 0;
+    padding: 12px;
+    box-shadow: none;
+    margin-bottom: 10px;
+  }
+  .form-header::before { display: none; }
+  .form-header h1 { font-size: 20px; }
+  .form-header p { color: #333; }
+
+  .warning-box {
+    border: 1px solid #999;
+    background: none;
+    padding: 8px 12px;
+  }
+  .warning-box p { color: #000; }
+
+  .form-section {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+  }
+  .section-title {
+    background: #f0f0f0 !important;
+    border-bottom: 1px solid #000;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .section-title .num {
+    background: #000;
+  }
+  .section-body {
+    padding: 10px 12px;
+  }
+
+  .field-grid {
+    gap: 8px;
+  }
+  .field-group label {
+    font-size: 11px;
+  }
+  .field-group input,
+  .field-group select,
+  .field-group textarea {
+    border: none !important;
+    border-bottom: 1px solid #999 !important;
+    border-radius: 0 !important;
+    padding: 4px 2px;
+    font-size: 12px;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  .radio-group label, .checkbox-group label {
+    border: none;
+    padding: 2px 6px;
+    font-size: 11px;
+  }
+
+  .conditional-inner {
+    background: none;
+    border-right: 2px solid #999;
+    padding: 8px;
+  }
+  .dynamic-entry {
+    background: none;
+    border-right: 2px solid #999;
+    padding: 8px;
+    margin-bottom: 6px;
+  }
+
+  .doc-table th, .doc-table td {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+
+  .page-signature {
+    border-top: 1px solid #999;
+    padding-top: 8px;
+    margin-top: 16px;
+  }
+
+  /* Page break helpers */
+  .page-break-before { page-break-before: always; }
+
+  .declaration-text { font-size: 11px; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 600px) {
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+  .logo-section { flex-direction: column; }
+  .form-header h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="form-container" id="formContainer">
+
+  <!-- ================================================================
+       FIXED LOGO — Top Center
+       ================================================================ -->
+  <div class="fixed-logo-area" style="text-align:center; margin-bottom:16px;">
+    <img id="fixedLogo" src="" alt="ALMASAR Logo" style="width:140px; height:auto;">
+    <h2 style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--primary); margin-top:10px;">شركة المسار للخدمات الدراسية</h2>
+    <p style="font-size:14px; color:var(--text-muted); margin-top:6px; direction:ltr; text-align:center;">
+      أرقام الهاتف<br>
+      <span style="letter-spacing:0.5px;">+218-912475656</span> &nbsp;|&nbsp;
+      <span style="letter-spacing:0.5px;">+218-912485656</span> &nbsp;|&nbsp;
+      <span style="letter-spacing:0.5px;">+218-912495656</span>
+    </p>
+  </div>
+
+  <!-- ================================================================
+       FORM HEADER
+       ================================================================ -->
+  <div class="form-header">
+    <h1>نموذج بيانات التأشيرة البريطانية</h1>
+    <p>الرجاء تعبئة النموذج بالكامل — أي نقص في المعلومات يتحمل مقدم الطلب المسؤولية الكاملة</p>
+  </div>
+
+  <!-- ================================================================
+       WARNING NOTE
+       ================================================================ -->
+  <div class="warning-box">
+    <div class="icon">⚠️</div>
+    <p>
+      <strong>نصيحة هامة:</strong> يرجى التأكد من كتابة جميع الأسماء (اسم المتقدم، الأب، الأم، الزوجة) باللغة الإنجليزية بشكل يطابق جواز السفر تماماً لتجنب أي تأخير أو رفض للطلب.
+    </p>
+  </div>
+
+  <!-- ================================================================
+       GROUP 1: PERSONAL & PASSPORT INFO
+       ================================================================ -->
+  <div class="form-section">
+    <div class="section-title"><span class="num">1</span> المعلومات الشخصية وجواز السفر</div>
+    <div class="section-body">
+
+      <!-- ---- Date & Country ---- -->
+      <div class="field-grid">
+        <div class="field-group">
+          <label>التاريخ</label>
+          <input type="date" id="formDate">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> اسم الدولة التي ستقدم منها</label>
+          <input type="text" id="applyCountry">
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Name, DOB, Sex, Nationality ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> الاسم كامل (باللغة الإنجليزية كما في جواز السفر)</label>
+          <input type="text" id="fullName">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> تاريخ الميلاد</label>
+          <input type="date" id="dob">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> الجنس</label>
+          <div class="radio-group">
+            <label><input type="radio" name="sex" value="ذكر"><span>ذكر</span></label>
+            <label><input type="radio" name="sex" value="أنثى"><span>أنثى</span></label>
+          </div>
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> الجنسية (التي ستقدم بها)</label>
+          <input type="text" id="nationality">
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Main Passport ---- -->
+      <div class="field-grid">
+        <div class="field-group">
+          <label><span class="req">*</span> رقم جواز السفر</label>
+          <input type="text" id="passportNum">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> تاريخ إصدار جواز السفر</label>
+          <input type="date" id="passportIssueDate">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> مكان الإصدار</label>
+          <input type="text" id="passportIssuePlace">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> تاريخ انتهاء صلاحية جواز السفر</label>
+          <input type="date" id="passportExpiry">
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Other Nationalities (Dynamic, max 3 additional = 4 total) ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label>هل لديك جنسية أخرى؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="hasOtherNat" value="نعم" onchange="toggleConditional('otherNatBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="hasOtherNat" value="لا" onchange="toggleConditional('otherNatBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="otherNatBlock">
+        <div class="conditional-inner">
+          <div id="otherNatContainer">
+            <!-- Dynamic nationality entries -->
+          </div>
+          <button type="button" class="btn-add no-print" id="addNatBtn" onclick="addNationality()">+ إضافة جنسية</button>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Contact ---- -->
+      <div class="field-grid">
+        <div class="field-group">
+          <label><span class="req">*</span> البريد الإلكتروني الشخصي (مفعل على جهازك)</label>
+          <input type="email" id="email" dir="ltr" style="text-align:left;">
+        </div>
+        <div class="field-group">
+          <label>بريد إلكتروني إضافي</label>
+          <input type="email" id="email2" dir="ltr" style="text-align:left;">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> رقم الهاتف</label>
+          <input type="tel" id="phone" dir="ltr" style="text-align:left;">
+        </div>
+        <div class="field-group">
+          <label>رقم هاتف آخر</label>
+          <input type="tel" id="phone2" dir="ltr" style="text-align:left;">
+        </div>
+        <div class="field-group full-width">
+          <label><span class="req">*</span> الشارع</label>
+          <input type="text" id="street">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> المدينة</label>
+          <input type="text" id="city">
+        </div>
+        <div class="field-group">
+          <label>الرمز البريدي (إن وجد)</label>
+          <input type="text" id="postalCode">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> الدولة</label>
+          <input type="text" id="addressCountry">
+        </div>
+        <div class="field-group">
+          <label>منذ متى وأنت تعيش في هذا العنوان؟</label>
+          <input type="text" id="addressSince">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> نوع السكن الحالي</label>
+          <div class="radio-group">
+            <label><input type="radio" name="housingType" value="أنا المالك" onchange="toggleConditional('housingOtherBlock', false)"><span>أنا المالك</span></label>
+            <label><input type="radio" name="housingType" value="أنا المستأجر" onchange="toggleConditional('housingOtherBlock', false)"><span>أنا المستأجر</span></label>
+            <label><input type="radio" name="housingType" value="شيء آخر" onchange="toggleConditional('housingOtherBlock', true)"><span>شيء آخر</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="housingOtherBlock">
+        <div class="conditional-inner">
+          <div class="field-group full-width">
+            <label>يرجى توضيح من يملك العقار ومن يسكن فيه</label>
+            <textarea id="housingOther" rows="2" data-conditional="housingOtherBlock"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Marital Status ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> الحالة الاجتماعية</label>
+          <div class="radio-group">
+            <label><input type="radio" name="maritalStatus" value="أعزب" onchange="toggleSpouse(this.value)"><span>أعزب</span></label>
+            <label><input type="radio" name="maritalStatus" value="متزوج" onchange="toggleSpouse(this.value)"><span>متزوج</span></label>
+            <label><input type="radio" name="maritalStatus" value="أرمل" onchange="toggleSpouse(this.value)"><span>أرمل</span></label>
+            <label><input type="radio" name="maritalStatus" value="مطلق" onchange="toggleSpouse(this.value)"><span>مطلق</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spouse fields (conditional) -->
+      <div class="conditional-block" id="spouseBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group full-width">
+              <label><span class="req">*</span> اسم الزوج/ـة ولقبه/ها (بالإنجليزية كما في جواز السفر)</label>
+              <input type="text" id="spouseName">
+            </div>
+            <div class="field-group">
+              <label>تاريخ الميلاد</label>
+              <input type="date" id="spouseDOB">
+            </div>
+            <div class="field-group">
+              <label>مكان الميلاد</label>
+              <input type="text" id="spouseBirthPlace">
+            </div>
+            <div class="field-group">
+              <label><span class="req">*</span> الجنسية</label>
+              <input type="text" id="spouseNationality">
+            </div>
+            <div class="field-group">
+              <label>هل سيسافر معك إلى بريطانيا؟</label>
+              <div class="radio-group">
+                <label><input type="radio" name="spouseTravel" value="نعم" onchange="toggleSpousePassport(this.value)"><span>نعم</span></label>
+                <label><input type="radio" name="spouseTravel" value="لا" onchange="toggleSpousePassport(this.value)"><span>لا</span></label>
+              </div>
+            </div>
+            <div class="field-group conditional-block" id="spousePassportBlock">
+              <label>رقم جواز سفره/ها</label>
+              <input type="text" id="spousePassport">
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <!-- ================================================================
+       GROUP 2: PARENTS INFO
+       ================================================================ -->
+  <div class="form-section">
+    <div class="section-title"><span class="num">2</span> معلومات الوالدين (بالإنجليزية كما في جواز السفر)</div>
+    <div class="section-body">
+
+      <p class="note-text" style="margin-bottom:12px;">الرجاء كتابة اسم الأم والأب باللغة الإنجليزية مثل ما في جواز السفر أو الوضع العائلي المترجم</p>
+
+      <!-- Mother -->
+      <h4 style="color:var(--primary); margin-bottom:8px; font-size:15px;">معلومات الأم</h4>
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> اسم الأم واللقب (بالإنجليزية)</label>
+          <input type="text" id="motherName">
+        </div>
+        <div class="field-group">
+          <label>تاريخ الميلاد</label>
+          <input type="date" id="motherDOB">
+        </div>
+        <div class="field-group">
+          <label>مكان الميلاد</label>
+          <input type="text" id="motherBirthPlace">
+        </div>
+        <div class="field-group">
+          <label>الجنسية</label>
+          <input type="text" id="motherNationality">
+        </div>
+        <div class="field-group">
+          <label>جنسية أخرى (إن وجدت)</label>
+          <input type="text" id="motherNationality2">
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- Father -->
+      <h4 style="color:var(--primary); margin-bottom:8px; font-size:15px;">معلومات الأب</h4>
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> اسم الأب واللقب (بالإنجليزية)</label>
+          <input type="text" id="fatherName">
+        </div>
+        <div class="field-group">
+          <label>تاريخ الميلاد</label>
+          <input type="date" id="fatherDOB">
+        </div>
+        <div class="field-group">
+          <label>مكان الميلاد</label>
+          <input type="text" id="fatherBirthPlace">
+        </div>
+        <div class="field-group">
+          <label>الجنسية</label>
+          <input type="text" id="fatherNationality">
+        </div>
+        <div class="field-group">
+          <label>جنسية أخرى (إن وجدت)</label>
+          <input type="text" id="fatherNationality2">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================================
+       GROUP 3: TRAVEL PURPOSE & WORK
+       ================================================================ -->
+  <div class="form-section">
+    <div class="section-title"><span class="num">3</span> غرض السفر والعمل</div>
+    <div class="section-body">
+
+      <!-- ---- Visa & Travel ---- -->
+      <div class="field-grid">
+        <div class="field-group">
+          <label><span class="req">*</span> مدة التأشيرة المطلوبة</label>
+          <div class="radio-group">
+            <label><input type="radio" name="visaDuration" value="6 أشهر"><span>6 أشهر</span></label>
+            <label><input type="radio" name="visaDuration" value="سنتين"><span>سنتين</span></label>
+            <label><input type="radio" name="visaDuration" value="5 سنين"><span>5 سنين</span></label>
+            <label><input type="radio" name="visaDuration" value="10 سنين"><span>10 سنين</span></label>
+          </div>
+          <p class="note-text">التكلفة تختلف حسب المدة</p>
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> الغرض من الزيارة</label>
+          <input type="text" id="visitPurpose">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> تاريخ السفر إلى بريطانيا</label>
+          <input type="date" id="travelDate">
+        </div>
+        <div class="field-group">
+          <label><span class="req">*</span> تاريخ العودة</label>
+          <input type="date" id="returnDate">
+        </div>
+        <div class="field-group full-width">
+          <label><span class="req">*</span> شرح عن سبب السفر بالتفصيل وماذا ستفعل في بريطانيا</label>
+          <textarea id="travelReason" rows="3"></textarea>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Employment ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> الوضع الوظيفي</label>
+          <div class="radio-group">
+            <label><input type="radio" name="empStatus" value="موظف" onchange="handleEmpStatus(this.value)"><span>موظف</span></label>
+            <label><input type="radio" name="empStatus" value="عمل حر" onchange="handleEmpStatus(this.value)"><span>عمل حر</span></label>
+            <label><input type="radio" name="empStatus" value="طالب" onchange="handleEmpStatus(this.value)"><span>طالب</span></label>
+            <label><input type="radio" name="empStatus" value="متقاعد" onchange="handleEmpStatus(this.value)"><span>متقاعد</span></label>
+            <label><input type="radio" name="empStatus" value="بدون عمل" onchange="handleEmpStatus(this.value)"><span>بدون عمل</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conditional: موظف — full employment details -->
+      <div class="conditional-block" id="empEmployedBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group">
+              <label>اسم المكان أو المؤسسة</label>
+              <input type="text" id="employer" data-conditional="empEmployedBlock">
+            </div>
+            <div class="field-group">
+              <label>المسمى الوظيفي</label>
+              <input type="text" id="jobTitle" data-conditional="empEmployedBlock">
+            </div>
+            <div class="field-group">
+              <label>تاريخ بدء العمل</label>
+              <input type="date" id="jobStartDate" data-conditional="empEmployedBlock">
+            </div>
+            <div class="field-group full-width">
+              <label>عنوان العمل</label>
+              <input type="text" id="workAddress" data-conditional="empEmployedBlock">
+            </div>
+            <div class="field-group">
+              <label><span class="req">*</span> رقم هاتف العمل</label>
+              <input type="tel" id="workPhone" dir="ltr" style="text-align:left;" data-conditional="empEmployedBlock">
+            </div>
+            <div class="field-group full-width">
+              <label><span class="req">*</span> شرح عن طبيعة مهامك الوظيفية</label>
+              <textarea id="jobDesc" rows="2" data-conditional="empEmployedBlock"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conditional: عمل حر — brief description -->
+      <div class="conditional-block" id="empFreelanceBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group full-width">
+              <label><span class="req">*</span> اشرح طبيعة عملك الحر بإيجاز</label>
+              <textarea id="freelanceDesc" rows="2" data-conditional="empFreelanceBlock"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conditional: متقاعد — pension salary -->
+      <div class="conditional-block" id="empRetiredBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group">
+              <label><span class="req">*</span> كم هو راتبك التقاعدي شهرياً؟</label>
+              <input type="text" id="pensionSalary" data-conditional="empRetiredBlock">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Other Job (Conditional) ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label>هل لديك أي عمل آخر؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="hasOtherJob" value="نعم" onchange="toggleConditional('otherJobBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="hasOtherJob" value="لا" onchange="toggleConditional('otherJobBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="otherJobBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group">
+              <label>اسم المكان الذي تعمل به</label>
+              <input type="text" id="otherJobPlace" data-conditional="otherJobBlock">
+            </div>
+            <div class="field-group">
+              <label>المهنة</label>
+              <input type="text" id="otherJobProfession" data-conditional="otherJobBlock">
+            </div>
+            <div class="field-group">
+              <label>تاريخ بدء العمل</label>
+              <input type="date" id="otherJobStart" data-conditional="otherJobBlock">
+            </div>
+            <div class="field-group full-width">
+              <label>عنوان العمل</label>
+              <input type="text" id="otherJobAddress" data-conditional="otherJobBlock">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Other Income (Conditional) ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> هل لديك مصدر رزق آخر؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="hasOtherIncome" value="نعم" onchange="toggleConditional('otherIncomeBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="hasOtherIncome" value="لا" onchange="toggleConditional('otherIncomeBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="otherIncomeBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group full-width">
+              <label>نوع مصدر الرزق</label>
+              <div class="checkbox-group">
+                <label><input type="checkbox" name="incomeType" value="استثمار" data-conditional="otherIncomeBlock"><span>استثمار</span></label>
+                <label><input type="checkbox" name="incomeType" value="مدخرات" data-conditional="otherIncomeBlock"><span>مدخرات</span></label>
+                <label><input type="checkbox" name="incomeType" value="معاش تقاعدي" data-conditional="otherIncomeBlock"><span>معاش تقاعدي</span></label>
+                <label><input type="checkbox" name="incomeType" value="إعالة من العائلة" data-conditional="otherIncomeBlock"><span>إعالة من العائلة</span></label>
+              </div>
+            </div>
+            <div class="field-group full-width">
+              <label>ما هو وكم دخلك السنوي من هذه المصادر</label>
+              <input type="text" id="otherIncomeDetails" data-conditional="otherIncomeBlock">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Expenses ---- -->
+      <div class="field-grid">
+        <div class="field-group">
+          <label><span class="req">*</span> كم تنفق شهرياً على نفسك وعائلتك في دولة الإقامة؟</label>
+          <input type="text" id="monthlyExpense">
+        </div>
+        <div class="field-group">
+          <label>المبلغ المخصص للسفر</label>
+          <input type="text" id="travelBudget">
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Financial Sponsor (Conditional) ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> من الذي سيتكفل بمصاريف سفرك إلى بريطانيا؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="sponsor" value="شخص قريب" onchange="toggleConditional('sponsorBlock', true)"><span>شخص قريب من العائلة أو صديق</span></label>
+            <label><input type="radio" name="sponsor" value="صاحب العمل" onchange="toggleConditional('sponsorBlock', false)"><span>صاحب العمل أو شركتي</span></label>
+            <label><input type="radio" name="sponsor" value="لا احد" onchange="toggleConditional('sponsorBlock', false)"><span>لا أحد</span></label>
+            <label><input type="radio" name="sponsor" value="شركة أخرى" onchange="toggleConditional('sponsorBlock', true)"><span>شركة أخرى أو منظمة</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="sponsorBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group">
+              <label>اسم الكفيل</label>
+              <input type="text" id="sponsorName" data-conditional="sponsorBlock">
+            </div>
+            <div class="field-group">
+              <label>عنوانه</label>
+              <input type="text" id="sponsorAddress" data-conditional="sponsorBlock">
+            </div>
+            <div class="field-group full-width">
+              <label>سبب الكفالة المالية</label>
+              <input type="text" id="sponsorReason" data-conditional="sponsorBlock">
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <!-- ================================================================
+       GROUP 4: TRAVEL HISTORY & REFUSALS
+       ================================================================ -->
+  <div class="form-section">
+    <div class="section-title"><span class="num">4</span> السفريات السابقة والرفوضات</div>
+    <div class="section-body">
+
+      <!-- ---- Previous UK Travel ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> هل سبق لك أن سافرت إلى بريطانيا؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="prevUKTravel" value="نعم" onchange="toggleConditional('prevUKBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="prevUKTravel" value="لا" onchange="toggleConditional('prevUKBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="conditional-block" id="prevUKBlock">
+        <div class="conditional-inner">
+          <!-- How many times traveled to UK -->
+          <div class="field-grid" style="margin-bottom:16px;">
+            <div class="field-group">
+              <label><span class="req">*</span> كم مرة سافرت إلى بريطانيا في السنوات الـ10 الماضية؟</label>
+              <input type="text" id="ukTravelCount10yrs" data-conditional="prevUKBlock">
+            </div>
+          </div>
+          <p style="font-weight:600; margin-bottom:8px; color:var(--primary);">اذكر آخر ثلاث سفريات إلى بريطانيا:</p>
+          <div id="ukTripsContainer">
+            <!-- Dynamic UK trips will be added here -->
+          </div>
+          <button type="button" class="btn-add no-print" onclick="addUKTrip()">+ إضافة رحلة</button>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Last UK Visa ---- -->
+      <div class="field-grid">
+        <div class="field-group">
+          <label>التأشيرة الأخيرة لدولة بريطانيا — تاريخ الإصدار</label>
+          <input type="date" id="lastUKVisaDate">
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Study in UK ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> هل سبق ودرست في المملكة المتحدة؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="studiedUK" value="نعم" onchange="toggleConditional('studiedUKBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="studiedUK" value="لا" onchange="toggleConditional('studiedUKBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="studiedUKBlock">
+        <div class="conditional-inner">
+          <div class="field-group full-width">
+            <label>متى وأين؟</label>
+            <input type="text" id="studyUKDetails" data-conditional="studiedUKBlock">
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- UK Driving License ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> هل تمتلك رخصة قيادة في بريطانيا؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="ukLicense" value="نعم" onchange="toggleConditional('ukLicenseBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="ukLicense" value="لا" onchange="toggleConditional('ukLicenseBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="ukLicenseBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group">
+              <label>رقم الرخصة</label>
+              <input type="text" id="licenseNum" data-conditional="ukLicenseBlock">
+            </div>
+            <div class="field-group">
+              <label>تاريخ الإصدار</label>
+              <input type="date" id="licenseIssue" data-conditional="ukLicenseBlock">
+            </div>
+            <div class="field-group">
+              <label>تاريخ الانتهاء</label>
+              <input type="date" id="licenseExpiry" data-conditional="ukLicenseBlock">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- NHS Number ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> هل تمتلك رقم تأمين بريطاني NHS؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="hasNHS" value="نعم" onchange="toggleConditional('nhsBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="hasNHS" value="لا" onchange="toggleConditional('nhsBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="nhsBlock">
+        <div class="conditional-inner">
+          <div class="field-group">
+            <label>رقم التأمين NHS</label>
+            <input type="text" id="nhsNumber" data-conditional="nhsBlock">
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- EU/Aus/Can/US Travel ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label>كم مرة سافرت إلى إحدى بلدان الاتحاد الأوروبي أو أستراليا، كندا، نيوزيلندا، أمريكا، سويسرا في السنوات الـ10 الماضية (لا تتضمن بريطانيا)؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="euTravelCount" value="ولا مرة" onchange="handleEuTravelCount(this.value)"><span>ولا مرة</span></label>
+            <label><input type="radio" name="euTravelCount" value="مرة" onchange="handleEuTravelCount(this.value)"><span>مرة</span></label>
+            <label><input type="radio" name="euTravelCount" value="مرتين إلى 5" onchange="handleEuTravelCount(this.value)"><span>مرتين إلى 5 مرات</span></label>
+            <label><input type="radio" name="euTravelCount" value="6 أو أكثر" onchange="handleEuTravelCount(this.value)"><span>6 مرات أو أكثر</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="euTravelBlock">
+        <div class="conditional-inner">
+          <p style="font-weight:600; margin-bottom:8px; color:var(--primary);">اذكر آخر رحلة:</p>
+          <div class="field-grid">
+            <div class="field-group">
+              <label>اسم الدولة</label>
+              <input type="text" id="euCountry" data-conditional="euTravelBlock">
+            </div>
+            <div class="field-group">
+              <label>تاريخ السفر (الشهر)</label>
+              <input type="text" id="euTravelMonth" data-conditional="euTravelBlock">
+            </div>
+            <div class="field-group">
+              <label>السنة</label>
+              <input type="text" id="euTravelYear" data-conditional="euTravelBlock">
+            </div>
+            <div class="field-group">
+              <label>مدة الإقامة</label>
+              <input type="text" id="euStayDuration" data-conditional="euTravelBlock">
+            </div>
+            <div class="field-group">
+              <label>سبب الزيارة</label>
+              <select id="euVisitReason" data-conditional="euTravelBlock" onchange="toggleEuOtherReason(this, 'euOtherReason1')">
+                <option value=""></option>
+                <option value="سياحة او زيارة">سياحة او زيارة</option>
+                <option value="عمل">عمل</option>
+                <option value="دراسة">دراسة</option>
+                <option value="ترانزيت">ترانزيت</option>
+                <option value="شيء آخر">شيء آخر</option>
+              </select>
+            </div>
+            <div class="field-group" id="euOtherReason1" style="display:none;">
+              <label>وضّح سبب السفر</label>
+              <input type="text" data-conditional="euTravelBlock">
+            </div>
+          </div>
+          <div id="euSecondTripBlock" style="display:none;">
+          <hr class="separator">
+          <p style="font-weight:600; margin-bottom:8px; color:var(--primary);">اذكر الرحلة قبل الأخيرة:</p>
+          <div class="field-grid">
+            <div class="field-group">
+              <label>اسم الدولة</label>
+              <input type="text" id="euCountry2" data-conditional="euTravelBlock">
+            </div>
+            <div class="field-group">
+              <label>تاريخ السفر (الشهر)</label>
+              <input type="text" id="euTravelMonth2" data-conditional="euTravelBlock">
+            </div>
+            <div class="field-group">
+              <label>السنة</label>
+              <input type="text" id="euTravelYear2" data-conditional="euTravelBlock">
+            </div>
+            <div class="field-group">
+              <label>مدة الإقامة</label>
+              <input type="text" id="euStayDuration2" data-conditional="euTravelBlock">
+            </div>
+            <div class="field-group">
+              <label>سبب الزيارة</label>
+              <select id="euVisitReason2" data-conditional="euTravelBlock" onchange="toggleEuOtherReason(this, 'euOtherReason2')">
+                <option value=""></option>
+                <option value="سياحة او زيارة">سياحة او زيارة</option>
+                <option value="عمل">عمل</option>
+                <option value="دراسة">دراسة</option>
+                <option value="ترانزيت">ترانزيت</option>
+                <option value="شيء آخر">شيء آخر</option>
+              </select>
+            </div>
+            <div class="field-group" id="euOtherReason2" style="display:none;">
+              <label>وضّح سبب السفر</label>
+              <input type="text" data-conditional="euTravelBlock">
+            </div>
+          </div>
+          </div><!-- end euSecondTripBlock -->
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Other Countries Travel (Dynamic) ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label>هل سافرت إلى أي بلد باستثناء بريطانيا وبلدان الاتحاد الأوروبي وأستراليا وكندا ونيوزيلندا وأمريكا وسويسرا في السنوات الـ10 الماضية؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="otherTravel" value="نعم" onchange="toggleConditional('otherTravelBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="otherTravel" value="لا" onchange="toggleConditional('otherTravelBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="otherTravelBlock">
+        <div class="conditional-inner">
+          <div id="otherTripsContainer">
+            <!-- Dynamic other trips will be added here -->
+          </div>
+          <button type="button" class="btn-add no-print" onclick="addOtherTrip()">+ إضافة رحلة</button>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Refusals (Dynamic) ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label><span class="req">*</span> هل لديك رفض (تأشيرة) من أي دولة بما في ذلك بريطانيا؟ (مهم)</label>
+          <div class="radio-group">
+            <label><input type="radio" name="hasRefusal" value="نعم" onchange="toggleConditional('refusalBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="hasRefusal" value="لا" onchange="toggleConditional('refusalBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="refusalBlock">
+        <div class="conditional-inner">
+          <div id="refusalsContainer">
+            <!-- Dynamic refusals will be added here -->
+          </div>
+          <button type="button" class="btn-add no-print" onclick="addRefusal()">+ إضافة رفض</button>
+        </div>
+      </div>
+  </div>
+
+  <!-- ================================================================
+       GROUP 5: MEDICAL & FAMILY IN UK
+       ================================================================ -->
+  <div class="form-section">
+    <div class="section-title"><span class="num">5</span> العلاج والعائلة في بريطانيا</div>
+    <div class="section-body">
+
+      <!-- ---- Previous Medical Treatment ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label>هل سبق لك أن حصلت على علاج في بريطانيا سابقاً؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="prevMedical" value="نعم" onchange="toggleConditional('medicalBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="prevMedical" value="لا" onchange="toggleConditional('medicalBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="medicalBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group">
+              <label>اسم المستشفى</label>
+              <input type="text" id="hospitalName" data-conditional="medicalBlock">
+            </div>
+            <div class="field-group full-width">
+              <label>عنوانها</label>
+              <input type="text" id="hospitalAddress" data-conditional="medicalBlock">
+            </div>
+            <div class="field-group">
+              <label>تكلفة العلاج</label>
+              <input type="text" id="treatmentCost" data-conditional="medicalBlock">
+            </div>
+            <div class="field-group">
+              <label>نوع العلاج</label>
+              <input type="text" id="treatmentType" data-conditional="medicalBlock">
+            </div>
+            <div class="field-group">
+              <label>مدة العلاج</label>
+              <input type="text" id="treatmentDuration" data-conditional="medicalBlock">
+            </div>
+            <div class="field-group">
+              <label>هل لديك ديون للمستشفى وكم قيمتها</label>
+              <input type="text" id="hospitalDebt" data-conditional="medicalBlock">
+            </div>
+            <div class="field-group">
+              <label>التاريخ</label>
+              <input type="date" id="treatmentDate" data-conditional="medicalBlock">
+            </div>
+            <div class="field-group">
+              <label>رقم هاتف المستشفى</label>
+              <input type="tel" id="hospitalPhone" dir="ltr" style="text-align:left;" data-conditional="medicalBlock">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="separator">
+
+      <!-- ---- Family in UK ---- -->
+      <div class="field-grid">
+        <div class="field-group full-width">
+          <label>هل لديك أحد من أفراد العائلة موجود في بريطانيا؟</label>
+          <div class="radio-group">
+            <label><input type="radio" name="familyUK" value="نعم" onchange="toggleConditional('familyUKBlock', true)"><span>نعم</span></label>
+            <label><input type="radio" name="familyUK" value="لا" onchange="toggleConditional('familyUKBlock', false)"><span>لا</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="conditional-block" id="familyUKBlock">
+        <div class="conditional-inner">
+          <div class="field-grid">
+            <div class="field-group full-width">
+              <label>الاسم واللقب</label>
+              <input type="text" id="familyUKName" data-conditional="familyUKBlock">
+            </div>
+            <div class="field-group">
+              <label>جنسيته</label>
+              <input type="text" id="familyUKNationality" data-conditional="familyUKBlock">
+            </div>
+            <div class="field-group">
+              <label>علاقته بك</label>
+              <input type="text" id="familyUKRelation" data-conditional="familyUKBlock">
+            </div>
+            <div class="field-group full-width">
+              <label>عنوانه</label>
+              <input type="text" id="familyUKAddress" data-conditional="familyUKBlock">
+            </div>
+            <div class="field-group">
+              <label>تاريخ الميلاد</label>
+              <input type="date" id="familyUKDOB" data-conditional="familyUKBlock">
+            </div>
+            <div class="field-group">
+              <label>مكان الميلاد</label>
+              <input type="text" id="familyUKBirthPlace" data-conditional="familyUKBlock">
+            </div>
+            <div class="field-group">
+              <label><span class="req">*</span> رقم جواز سفره</label>
+              <input type="text" id="familyUKPassport" data-conditional="familyUKBlock">
+            </div>
+            <div class="field-group full-width">
+              <label>سبب تواجده في بريطانيا</label>
+              <div class="radio-group">
+                <label><input type="radio" name="familyUKStatus" value="إقامة دائمة" data-conditional="familyUKBlock"><span>إقامة دائمة</span></label>
+                <label><input type="radio" name="familyUKStatus" value="إقامة مؤقتة" data-conditional="familyUKBlock"><span>إقامة مؤقتة</span></label>
+                <label><input type="radio" name="familyUKStatus" value="مواطن بريطاني" data-conditional="familyUKBlock"><span>مواطن بريطاني</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <!-- ================================================================
+       GROUP 6: DOCUMENTS TABLE & DECLARATION
+       ================================================================ -->
+  <div class="form-section">
+    <div class="section-title"><span class="num">6</span> الوثائق المقدمة والإقرار</div>
+    <div class="section-body">
+
+      <h4 style="color:var(--primary); margin-bottom:12px; font-size:15px;">الوثائق المقدمة للحصول على التأشيرة البريطانية</h4>
+
+      <table class="doc-table" id="docTable">
+        <thead>
+          <tr>
+            <th style="width:50px;">الرقم</th>
+            <th>المستند</th>
+            <th style="width:80px;">مترجم</th>
+            <th style="width:80px;">غير مترجم</th>
+            <th style="width:100px;">لا يحتاج ترجمة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 10 rows generated by JS -->
+        </tbody>
+      </table>
+
+      <button type="button" class="btn-add no-print" onclick="addDocRow()" style="margin-top:12px;">+ إضافة مستند</button>
+
+      <p class="note-text" style="margin-top:12px;">ملاحظة: قرار الرد من السفارة البريطانية يكون بعد حوالي 3 أسابيع من يوم التقديم</p>
+
+      <hr class="separator">
+
+      <!-- Declaration -->
+      <div class="declaration-text">
+        أنا الموقع أدناه <input type="text" id="declarantName" style="border:none; border-bottom:2px solid var(--primary); padding:4px 8px; font-family:var(--font-body); font-size:15px; min-width:200px; background:transparent;"> أقر بأن المعلومات المدخلة في هذا النموذج للتقديم على تأشيرة دخول إلى بريطانيا صحيحة وقد تم الاطلاع على الأوراق المطلوبة للتأشيرة بالكامل وأتحمل المسؤولية القانونية الكاملة في حالة وجود أخطاء.
+      </div>
+
+      <div class="signature-line">
+        <label>التوقيع:</label>
+        <input type="text" id="finalSignature">
+        <label>التاريخ:</label>
+        <input type="date" id="finalDate" style="max-width:180px;">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================================
+       DISCLAIMER
+       ================================================================ -->
+  <div style="background:#FEF2F2; border:1.5px solid #DC2626; border-radius:var(--radius); padding:16px 20px; margin-bottom:20px; text-align:center;">
+    <p style="font-family:var(--font-heading); font-size:14px; font-weight:600; color:#991B1B; line-height:2;">
+      تنويه هام: هذا النموذج ليس طلب التأشيرة الرسمي المقدم إلى السفارة البريطانية، وإنما هو نموذج داخلي خاص بشركة المسار للخدمات الدراسية يُستخدم لجمع بيانات المتقدمين بهدف تعبئة طلب التأشيرة الرسمي نيابةً عنهم. لا تتحمل السفارة البريطانية أي مسؤولية تجاه هذا النموذج.
+    </p>
+  </div>
+
+  <!-- ================================================================
+       PRINT BUTTON
+       ================================================================ -->
+  <button type="button" class="btn-print no-print" onclick="window.print()">🖨️ طباعة النموذج</button>
+
+</div>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+/* ============================================================
+   LOGO — Embedded base64 on load
+   ============================================================ */
+// Logo is loaded via embedded base64 at DOMContentLoaded below
+
+/* ============================================================
+   CONDITIONAL LOGIC — Show/Hide blocks & clear values
+   ============================================================ */
+function toggleConditional(blockId, show) {
+  const block = document.getElementById(blockId);
+  if (!block) return;
+
+  if (show) {
+    block.classList.add('visible');
+  } else {
+    block.classList.remove('visible');
+    // Clear all input values inside the hidden block
+    clearBlockValues(block);
+  }
+}
+
+function clearBlockValues(block) {
+  /* Clear text, email, tel, date, number inputs */
+  block.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"]').forEach(el => {
+    el.value = '';
+  });
+  /* Clear textareas */
+  block.querySelectorAll('textarea').forEach(el => { el.value = ''; });
+  /* Uncheck radios and checkboxes */
+  block.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => {
+    el.checked = false;
+  });
+  /* Reset selects */
+  block.querySelectorAll('select').forEach(el => { el.selectedIndex = 0; });
+}
+
+/* ============================================================
+   SPOUSE CONDITIONAL
+   ============================================================ */
+function toggleSpouse(val) {
+  const show = (val === 'متزوج');
+  toggleConditional('spouseBlock', show);
+}
+
+function toggleSpousePassport(val) {
+  const block = document.getElementById('spousePassportBlock');
+  if (val === 'نعم') {
+    block.classList.add('visible');
+  } else {
+    block.classList.remove('visible');
+    document.getElementById('spousePassport').value = '';
+  }
+}
+
+/* ============================================================
+   DYNAMIC ARRAYS — UK Trips (with travel reason select)
+   ============================================================ */
+let ukTripCount = 0;
+
+function addUKTrip() {
+  ukTripCount++;
+  const n = ukTripCount;
+  const container = document.getElementById('ukTripsContainer');
+  const entry = document.createElement('div');
+  entry.className = 'dynamic-entry';
+  entry.innerHTML = `
+    <div class="entry-header">
+      <span class="entry-num">رحلة رقم ${n}</span>
+      <button type="button" class="btn-remove no-print" onclick="this.closest('.dynamic-entry').remove(); renumberEntries('ukTripsContainer','رحلة رقم')">- حذف</button>
+    </div>
+    <div class="field-grid">
+      <div class="field-group">
+        <label>سبب الزيارة</label>
+        <select onchange="toggleTripOtherReason(this)">
+          <option value=""></option>
+          <option value="سياحة او زيارة">سياحة او زيارة</option>
+          <option value="عمل">عمل</option>
+          <option value="دراسة">دراسة</option>
+          <option value="ترانزيت">ترانزيت</option>
+          <option value="شيء آخر">شيء آخر</option>
+        </select>
+      </div>
+      <div class="field-group trip-other-reason" style="display:none;">
+        <label>وضّح سبب السفر</label>
+        <input type="text">
+      </div>
+      <div class="field-group">
+        <label>تاريخ السفر</label>
+        <input type="date">
+      </div>
+      <div class="field-group">
+        <label>مدة الإقامة</label>
+        <input type="text">
+      </div>
+    </div>
+  `;
+  container.appendChild(entry);
+}
+
+// Add initial 3 UK trips
+function initUKTrips() {
+  for (let i = 0; i < 3; i++) addUKTrip();
+}
+
+/* ============================================================
+   DYNAMIC ARRAYS — Other Country Trips (with travel reason select)
+   ============================================================ */
+let otherTripCount = 0;
+
+function addOtherTrip() {
+  otherTripCount++;
+  const n = otherTripCount;
+  const container = document.getElementById('otherTripsContainer');
+  const entry = document.createElement('div');
+  entry.className = 'dynamic-entry';
+  entry.innerHTML = `
+    <div class="entry-header">
+      <span class="entry-num">رحلة رقم ${n}</span>
+      <button type="button" class="btn-remove no-print" onclick="this.closest('.dynamic-entry').remove(); renumberEntries('otherTripsContainer','رحلة رقم')">- حذف</button>
+    </div>
+    <div class="field-grid">
+      <div class="field-group">
+        <label>اسم الدولة</label>
+        <input type="text">
+      </div>
+      <div class="field-group">
+        <label>تاريخ السفر</label>
+        <input type="date">
+      </div>
+      <div class="field-group">
+        <label>تاريخ العودة</label>
+        <input type="date">
+      </div>
+      <div class="field-group">
+        <label>سبب الزيارة</label>
+        <select onchange="toggleTripOtherReason(this)">
+          <option value=""></option>
+          <option value="سياحة او زيارة">سياحة او زيارة</option>
+          <option value="عمل">عمل</option>
+          <option value="دراسة">دراسة</option>
+          <option value="ترانزيت">ترانزيت</option>
+          <option value="شيء آخر">شيء آخر</option>
+        </select>
+      </div>
+      <div class="field-group trip-other-reason" style="display:none;">
+        <label>وضّح سبب السفر</label>
+        <input type="text">
+      </div>
+    </div>
+  `;
+  container.appendChild(entry);
+}
+
+/* ============================================================
+   DYNAMIC ARRAYS — Refusals
+   ============================================================ */
+let refusalCount = 0;
+
+function addRefusal() {
+  refusalCount++;
+  const container = document.getElementById('refusalsContainer');
+  const entry = document.createElement('div');
+  entry.className = 'dynamic-entry';
+  entry.innerHTML = `
+    <div class="entry-header">
+      <span class="entry-num">رفض رقم ${refusalCount}</span>
+      <button type="button" class="btn-remove no-print" onclick="this.closest('.dynamic-entry').remove(); renumberEntries('refusalsContainer','رفض رقم')">- حذف</button>
+    </div>
+    <div class="field-grid">
+      <div class="field-group">
+        <label>اسم الدولة</label>
+        <input type="text">
+      </div>
+      <div class="field-group">
+        <label>التاريخ</label>
+        <input type="date">
+      </div>
+      <div class="field-group full-width">
+        <label>سبب الرفض</label>
+        <input type="text">
+      </div>
+      <div class="field-group">
+        <label>نوع التأشيرة التي تم رفضها</label>
+        <input type="text">
+      </div>
+    </div>
+  `;
+  container.appendChild(entry);
+}
+
+/* ============================================================
+   RENUMBER DYNAMIC ENTRIES (after deletion)
+   ============================================================ */
+function renumberEntries(containerId, prefix) {
+  const container = document.getElementById(containerId);
+  const entries = container.querySelectorAll('.dynamic-entry');
+  entries.forEach((entry, idx) => {
+    entry.querySelector('.entry-num').textContent = prefix + ' ' + (idx + 1);
+  });
+  // Update counters
+  if (containerId === 'ukTripsContainer') ukTripCount = entries.length;
+  if (containerId === 'otherTripsContainer') otherTripCount = entries.length;
+  if (containerId === 'refusalsContainer') refusalCount = entries.length;
+}
+
+/* ============================================================
+   DOCUMENTS TABLE — Generate initial rows & add rows
+   ============================================================ */
+let docRowCount = 0;
+
+function addDocRow() {
+  docRowCount++;
+  const tbody = document.querySelector('#docTable tbody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td style="text-align:center; font-weight:600;">${docRowCount}</td>
+    <td><input type="text"></td>
+    <td style="text-align:center;"><input type="radio" name="docStatus${docRowCount}" value="مترجم"></td>
+    <td style="text-align:center;"><input type="radio" name="docStatus${docRowCount}" value="غير مترجم"></td>
+    <td style="text-align:center;"><input type="radio" name="docStatus${docRowCount}" value="لا يحتاج ترجمة"></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function initDocTable() {
+  for (let i = 0; i < 10; i++) addDocRow();
+}
+
+/* ============================================================
+   DYNAMIC NATIONALITIES (max 3 additional = الثانية، الثالثة، الرابعة)
+   ============================================================ */
+let natCount = 0;
+const natLabels = ['الجنسية الثانية', 'الجنسية الثالثة', 'الجنسية الرابعة'];
+const MAX_EXTRA_NAT = 3;
+
+function addNationality() {
+  if (natCount >= MAX_EXTRA_NAT) return;
+  natCount++;
+  const n = natCount;
+  const lbl = natLabels[n - 1];
+  const container = document.getElementById('otherNatContainer');
+  const entry = document.createElement('div');
+  entry.className = 'dynamic-entry';
+  entry.innerHTML = `
+    <div class="entry-header">
+      <span class="entry-num">${lbl}</span>
+      <button type="button" class="btn-remove no-print" onclick="removeNationality(this)">- حذف</button>
+    </div>
+    <div class="field-grid">
+      <div class="field-group">
+        <label><span class="req">*</span> ${lbl}</label>
+        <input type="text">
+      </div>
+      <div class="field-group">
+        <label>متى حصلت عليها؟</label>
+        <div class="radio-group">
+          <label><input type="radio" name="natOrigin${n}" value="منذ الولادة" onchange="this.closest('.dynamic-entry').querySelector('.nat-date-field').style.display='none'"><span>منذ الولادة</span></label>
+          <label><input type="radio" name="natOrigin${n}" value="تاريخ محدد" onchange="this.closest('.dynamic-entry').querySelector('.nat-date-field').style.display='flex'"><span>بتاريخ محدد</span></label>
+        </div>
+      </div>
+      <div class="field-group nat-date-field" style="display:none;">
+        <label>تاريخ الحصول على الجنسية</label>
+        <input type="date">
+      </div>
+      <div class="field-group full-width">
+        <label>هل لديك جواز سفر لهذه الجنسية؟</label>
+        <div class="radio-group">
+          <label><input type="radio" name="natPassport${n}" value="نعم" onchange="this.closest('.dynamic-entry').querySelector('.nat-passport-fields').style.display='block'"><span>نعم</span></label>
+          <label><input type="radio" name="natPassport${n}" value="لا" onchange="this.closest('.dynamic-entry').querySelector('.nat-passport-fields').style.display='none'"><span>لا</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="nat-passport-fields" style="display:none; margin-top:8px; background:var(--section-bg); border-radius:6px; padding:12px; border-right:3px solid var(--primary-light);">
+      <div class="field-grid">
+        <div class="field-group">
+          <label>رقم جواز السفر</label>
+          <input type="text">
+        </div>
+        <div class="field-group">
+          <label>تاريخ الإصدار</label>
+          <input type="date">
+        </div>
+        <div class="field-group">
+          <label>مكان الإصدار</label>
+          <input type="text">
+        </div>
+        <div class="field-group">
+          <label>تاريخ الانتهاء</label>
+          <input type="date">
+        </div>
+      </div>
+    </div>
+  `;
+  container.appendChild(entry);
+  updateNatButton();
+}
+
+function removeNationality(btn) {
+  btn.closest('.dynamic-entry').remove();
+  // Renumber remaining
+  const entries = document.querySelectorAll('#otherNatContainer .dynamic-entry');
+  natCount = entries.length;
+  entries.forEach((entry, idx) => {
+    entry.querySelector('.entry-num').textContent = natLabels[idx];
+    const mainLabel = entry.querySelector('.field-grid .field-group:first-child label');
+    if (mainLabel) {
+      mainLabel.innerHTML = '<span class="req">*</span> ' + natLabels[idx];
+    }
+  });
+  updateNatButton();
+}
+
+function updateNatButton() {
+  const btn = document.getElementById('addNatBtn');
+  if (natCount >= MAX_EXTRA_NAT) {
+    btn.style.display = 'none';
+  } else {
+    btn.style.display = 'inline-flex';
+  }
+}
+
+/* ============================================================
+   TRIP REASON TOGGLE — for dynamic trip entries
+   ============================================================ */
+function toggleTripOtherReason(select) {
+  const entry = select.closest('.dynamic-entry') || select.closest('.field-grid').parentElement;
+  const otherBox = entry.querySelector('.trip-other-reason');
+  if (otherBox) {
+    otherBox.style.display = select.value === 'شيء آخر' ? 'flex' : 'none';
+    if (select.value !== 'شيء آخر') {
+      const inp = otherBox.querySelector('input');
+      if (inp) inp.value = '';
+    }
+  }
+}
+
+/* ============================================================
+   EU TRIP REASON TOGGLE — for static EU trip fields
+   ============================================================ */
+function toggleEuOtherReason(select, targetId) {
+  const el = document.getElementById(targetId);
+  if (el) {
+    el.style.display = select.value === 'شيء آخر' ? 'flex' : 'none';
+    if (select.value !== 'شيء آخر') {
+      const inp = el.querySelector('input');
+      if (inp) inp.value = '';
+    }
+  }
+}
+
+/* ============================================================
+   EMPLOYMENT STATUS — Show/hide blocks based on selection
+   ============================================================ */
+function handleEmpStatus(val) {
+  // Hide all employment conditional blocks first
+  toggleConditional('empEmployedBlock', false);
+  toggleConditional('empFreelanceBlock', false);
+  toggleConditional('empRetiredBlock', false);
+
+  if (val === 'موظف') {
+    toggleConditional('empEmployedBlock', true);
+  } else if (val === 'عمل حر') {
+    toggleConditional('empFreelanceBlock', true);
+  } else if (val === 'متقاعد') {
+    toggleConditional('empRetiredBlock', true);
+  }
+  // طالب and بدون عمل: nothing shown
+}
+
+/* ============================================================
+   EU TRAVEL COUNT — Show/hide blocks based on selection
+   ============================================================ */
+function handleEuTravelCount(val) {
+  const euBlock = document.getElementById('euTravelBlock');
+  const secondTrip = document.getElementById('euSecondTripBlock');
+
+  if (val === 'ولا مرة') {
+    // Hide everything
+    toggleConditional('euTravelBlock', false);
+    secondTrip.style.display = 'none';
+  } else if (val === 'مرة') {
+    // Show only last trip
+    toggleConditional('euTravelBlock', true);
+    secondTrip.style.display = 'none';
+    // Clear second trip fields
+    secondTrip.querySelectorAll('input').forEach(el => { el.value = ''; });
+  } else {
+    // Show both trips
+    toggleConditional('euTravelBlock', true);
+    secondTrip.style.display = 'block';
+  }
+}
+
+/* ============================================================
+   INITIALIZE ON PAGE LOAD
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+  initUKTrips();
+  initDocTable();
+
+  // Load embedded logo
+  loadEmbeddedLogo();
+});
+
+/* ============================================================
+   LOAD EMBEDDED LOGO (base64)
+   ============================================================ */
+function loadEmbeddedLogo() {
+  var logo = document.getElementById('fixedLogo');
+  if (logo) {
+    logo.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATUAAAGQCAYAAADPzvdZAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAABeWElEQVR42u29d5wfV3nv/3nOmfmW7b0XrXZXsmTLklwx7hg3bAMB0h0gJJCb3CTc/ICQAAmYkADp95KbQrsk5Cbh5oYbmg0u2NjG4IKbXNXbrrS977fMnPP8/pjZ1VZpZr+7llZ63np9WSPtfOfMKc88zzlPAQRBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEFYHki44N6huu4WHDn831ni3X/ZRrqw/D8bmQOFU4QInGJ/mCcggAAwFjee+826Z/yLUhPVI5zWf5KJUI3bd+97Y473jtn9mT+Wh+GyZKgpkDZBIIDd2GK8++BFZA2cZSrrg7Kam86e4qLITSBejcdt74ipaGOx5BAlKg9me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';
+  }
+}
+
+</script>
+
+</body>
+</html>
